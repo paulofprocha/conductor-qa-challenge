@@ -15,18 +15,18 @@ public class ShowSalePage extends BasePage {
         action.moveToElement(qaLink).build().perform();
         WebElement saleLink = driver.findElement(By.linkText("Transações"));
         action.moveToElement(saleLink).build().perform();
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.findElement(By.linkText("Listar")).click();
-        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
     }
 
     public void clickSearch() {
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.findElement(By.name("j_idt20")).click();
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
     }
 
     public void clickView() {
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.findElement(By.cssSelector("#formListarTransacao > div > div > div > table > tbody > tr:nth-child(1) > td:nth-child(5) > a")).click();
-        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
     }
 
     public String checkView() {

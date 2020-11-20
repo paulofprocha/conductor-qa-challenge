@@ -16,8 +16,8 @@ public class LoginPage extends BasePage {
     }
 
     public void clickLogin() {
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.findElement(By.tagName("button")).click();
-        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
     }
 
     public String checkLoginIsSuccess() {

@@ -22,7 +22,7 @@ public class BasePage {
     }
 
     public void openURL() {
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.get(baseURL);
-        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
     }
 }

@@ -1,15 +1,16 @@
 package seleniumPages;
 
 import common.BasePage;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.*;
 
+import java.time.Duration;
 import java.util.Random;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class ClientAddPage extends BasePage {
 
@@ -19,14 +20,13 @@ public class ClientAddPage extends BasePage {
         action.moveToElement(qaLink).build().perform();
         WebElement clientLink = driver.findElement(By.linkText("Clientes"));
         action.moveToElement(clientLink).build().perform();
+        driver.manage().timeouts().implicitlyWait(10, SECONDS);
         driver.findElement(By.linkText("Incluir")).click();
-        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
     }
 
     //Prenche todos os campos obritórios do cliente
 
     public void addClientData() {
-        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         String randomText = UUID.randomUUID().toString();
         driver.findElement(By.id("nome")).sendKeys(randomText);
         driver.findElement(By.id("cpf")).sendKeys("99999999999");
@@ -39,13 +39,18 @@ public class ClientAddPage extends BasePage {
     }
 
     public void checkSuccessMsg() {
-        wait = new WebDriverWait(driver, 10);
-        By element = By.id("alertMessage");
-        String text = driver.findElement(By.id("alertMessage")).getText();
-        if(wait.until(ExpectedConditions.textToBePresentInElementLocated(element, text))){
-            System.out.println(""+text);
-        } else {
-            System.out.println("Erro ao exibir mensagem de sucesso");
-        }
+        Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+          .withTimeout(Duration.ofSeconds(30))
+          .pollingEvery(Duration.ofSeconds(5))
+          .ignoring(NoSuchElementException.class);
+
+        WebElement alertMessage = wait.until(new Function<WebDriver, WebElement>() {
+          public WebElement apply (WebDriver driver) {
+            return driver.findElement(By.id("alertMessage"));
+          }
+        });
+
+        String messageText = alertMessage.getText();
+        System.out.println(messageText);
     }
 }
